@@ -1,4 +1,4 @@
-# Data_Warehause
+# Data Warehause
 
 # Requerimientos del proyecto
 ## Hacer el Data Warehouse
