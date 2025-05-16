@@ -9,14 +9,25 @@
 	ADVERTENCIA:
 	Especial atención al manipular los dos primeros comandos, ya que eliminan toda la base de datos y la crean desde 0.
  */
-
+ 
+USE master;
+GO
 -- Eliminamos y creamos la base de datos desde 0
-DROP DATABASE IF EXISTS DataWarehouse; 
-CREATE DATABASE IF NOT EXISTS DataWarehouse;
+IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'datawarehouse')
+BEGIN
+	ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+    DROP DATABASE DataWarehouse;
+END;
+GO
+-- Creamos la base de datos
+CREATE DATABASE datawarehouse;
+GO
 
-USE DataWarehouse;
-
+USE datawarehouse;
+GO
 -- Creamos los esquemas
 CREATE SCHEMA bronze;
+GO
 CREATE SCHEMA silver;
+GO
 CREATE SCHEMA gold;
