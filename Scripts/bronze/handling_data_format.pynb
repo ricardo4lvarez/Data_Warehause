@@ -1,0 +1,23 @@
+import pandas as pd
+import os
+import glob
+
+carpeta = "D:/Memoria/SQL/Movies"
+archivos = glob.glob(os.path.join(carpeta, "*.csv"))
+
+columnas_con_zona_horaria = ["last_update"]
+
+# Procesamiento de todos los archivos
+for archivo in archivos:
+    print(f"Procesando: {archivo}")
+    df = pd.read_csv(archivo)
+
+    # Quitar zona horaria de las columnas indicadas
+    for col in columnas_con_zona_horaria:
+        if col in df.columns:
+            df[col] = df[col].astype(str).str.replace(r'([+-]\d{2})$', '', regex=True)
+
+    # Guardar archivos limpios
+    nombre_salida = os.path.join(carpeta, "l_" + os.path.basename(archivo))
+    df.to_csv(nombre_salida, index=False)
+    print(f"Guardado como: {nombre_salida}")
