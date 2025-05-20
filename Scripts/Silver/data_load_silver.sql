@@ -2,10 +2,10 @@
 	=======================================
 	  CARGA DE DATOS EN LA CAPA DE PLATA
 	=======================================
-	PROPÓSITO
-	• Este script sirve para crear el StoredProcedure para cargar todos los datos a partir de una carpeta local.
-	• Si observan que los archivos llevan el prefijo "l_" quiere decir "limpio", ya que tuve que hacer unas pequeñas transformaciones mediante el script de Python adjunto para poder insertar la data.
-	• Así mismo se hace un debug para observar cuánto tiempo tardan las operaciones y si hay algún error en la carga.
+	PROPÃ“SITO
+	â€¢ Este script sirve para crear el StoredProcedure para cargar todos los datos a partir de una carpeta local.
+	â€¢ Si observan que los archivos llevan el prefijo "l_" quiere decir "limpio", ya que tuve que hacer unas pequeÃ±as transformaciones mediante el script de Python adjunto para poder insertar la data.
+	â€¢ AsÃ­ mismo se hace un debug para observar cuÃ¡nto tiempo tardan las operaciones y si hay algÃºn error en la carga.
 */
 
 CREATE OR ALTER PROCEDURE silver.load_silver AS
@@ -424,8 +424,8 @@ BEGIN
 
 		SET @batch_end_time = GETDATE();
 		PRINT '=========================================='
-		PRINT '¡CARGA DE DATOS EXITOSA!';
-		PRINT '   - Duración total: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' segundos';
+		PRINT 'Â¡CARGA DE DATOS EXITOSA!';
+		PRINT '   - DuraciÃ³n total: ' + CAST(DATEDIFF(SECOND, @batch_start_time, @batch_end_time) AS NVARCHAR) + ' segundos';
 		PRINT '=========================================='
 
 	END TRY
