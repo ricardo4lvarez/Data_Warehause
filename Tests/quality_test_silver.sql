@@ -1,3 +1,10 @@
+/*
+	=======================================
+	  REVISIÃ“N DE CALIDAD DE DATOS
+	=======================================
+	PROPÃ“SITO
+	â€¢ Este script fue utilizado para realizar las transformaciones pertinentes de los datos para encargarse de los NULL, espacios en blanco en nombres, y revisar que los datos hayan sido transferidos correctamente entre capas.
+*/
 ------------------------------------------------ TABLA 1 ------------------------------------------------
 -- Determina si hay datos nulos y/o repetidos en la llave primaria
 SELECT
@@ -21,7 +28,7 @@ FROM bronze.actor
 		OR first_name IS NULL
 		OR last_name IS NULL
 		OR last_update IS NULL;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSIÃ“N: No se ocupan transformaciones*/
 
 ------------------------------------------------ TABLA 2 ------------------------------------------------
 -- Determina si hay datos nulos y/o repetidos en la llave primaria
@@ -32,7 +39,7 @@ FROM bronze.address
 	GROUP BY address_id
 	HAVING COUNT(address_id) > 1;
 
--- Tratar los espacios antes y después en la dirección
+-- Tratar los espacios antes y despuÃ©s en la direcciÃ³n
 SELECT address FROM bronze.address
 	WHERE address != TRIM(address);
 
@@ -46,12 +53,12 @@ SELECT
 	REPLACE(phone,'.0','') AS phone,
 	last_update
 FROM bronze.address;
-/* CONCLUSIÓN:Se ocupan transformaciones*/
+/* CONCLUSIÃ“N:Se ocupan transformaciones*/
 ------------------------------------------------ TABLA 3 ------------------------------------------------
 -- Revisar que no haya espacios en blanco en los nombres
 SELECT name FROM bronze.category
 	WHERE name != TRIM(name);
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSIÃ“N: No se ocupan transformaciones*/
 
 ------------------------------------------------ TABLA 4 ------------------------------------------------
 -- Revisar que no haya PK_id repetidos
@@ -69,7 +76,7 @@ SELECT * FROM bronze.city
 		OR city IS NULL
 		OR country_id IS NULL
 		OR last_update IS NULL;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSIÃ“N: No se ocupan transformaciones*/
 
 ------------------------------------------------ TABLA 5 ------------------------------------------------
 -- Revisar que no haya espacios en blanco
@@ -86,7 +93,7 @@ SELECT * FROM bronze.country
 SELECT country_id, COUNT(country_id) FROM bronze.country
 	GROUP BY country_id
 	HAVING COUNT(country_id) > 1;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSIÃ“N: No se ocupan transformaciones*/
 
 ------------------------------------------------ TABLA 6 ------------------------------------------------
 -- Revisar que no haya PK repetidas
@@ -97,7 +104,7 @@ FROM bronze.customer
 	GROUP BY customer_id
 	HAVING COUNT(customer_id) > 1;
 
--- Revisar por espacios vacíos dentro de los nombres
+-- Revisar por espacios vacÃ­os dentro de los nombres
 SELECT
 	first_name,
 	last_name,
@@ -106,7 +113,7 @@ FROM bronze.customer
 	WHERE first_name != TRIM(first_name)
 		OR last_name != TRIM(last_name)
 		OR email != TRIM(email);
--- Dar formato a los nombes y al email, así como 
+-- Dar formato a los nombes y al email, asÃ­ como 
 SELECT
 	customer_id,
 	store_id,
@@ -174,7 +181,7 @@ SELECT
 FROM bronze.language;
 
 ------------------------------------------------ TABLA 12 ------------------------------------------------
--- Okay, en este caso si hay repeticiones en el rental_id siendo que debería ser único; analizando la estructura de las tablas he podido observar que los "customer_id" coinciden en todos los casos (ya que debe ser el mismo cliente en ambos casos), por ello aquellos que no coincidan en ese campo serán desechados
+-- Okay, en este caso si hay repeticiones en el rental_id siendo que deberÃ­a ser Ãºnico; analizando la estructura de las tablas he podido observar que los "customer_id" coinciden en todos los casos (ya que debe ser el mismo cliente en ambos casos), por ello aquellos que no coincidan en ese campo serÃ¡n desechados
 SELECT 
 	bp.payment_id,
 	bp.customer_id,
