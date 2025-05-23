@@ -3,29 +3,29 @@
  	Crear base de datos y esquemas 
  --------------------------------------- 
  
-	PROPÓSITO:
-	Este script sirve para crear la base de datos y los esquemas con los que voy a estar trabajando. Todos ellos se encuentran en la carpeta de "docs" en el repositorio.
+	PURPOSE:
+	Create the database and schemas.
 
-	ADVERTENCIA:
-	Especial atención al manipular los dos primeros comandos, ya que eliminan toda la base de datos y la crean desde 0.
+	WARNING:
+	If you already have data in the tables and/or schemas the data will be errased when executing the script.
  */
  
 USE master;
 GO
--- Eliminamos y creamos la base de datos desde 0
+-- Drop the complete Data Base
 IF EXISTS (SELECT 1 FROM sys.databases WHERE name = 'datawarehouse')
 BEGIN
 	ALTER DATABASE DataWarehouse SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
     DROP DATABASE DataWarehouse;
 END;
 GO
--- Creamos la base de datos
+-- Creating Data Base
 CREATE DATABASE datawarehouse;
 GO
 
 USE datawarehouse;
 GO
--- Creamos los esquemas
+--Creating Schemas
 CREATE SCHEMA bronze;
 GO
 CREATE SCHEMA silver;
