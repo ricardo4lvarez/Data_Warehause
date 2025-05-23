@@ -1,6 +1,6 @@
 /*
  ---------------------------------------
- 	Crear base de datos y esquemas 
+ 	Create Data Base and Schemas
  --------------------------------------- 
  
 	PURPOSE:
