@@ -1,11 +1,18 @@
 /*
 	=======================================
-	  CARGA DE DATOS EN LA CAPA DE PLATA
+	  LOAD DATA IN BRONZE LAYER
 	=======================================
-	PROPÓSITO
-	• Este script sirve para crear el StoredProcedure para cargar todos los datos a partir de una carpeta local.
-	• Si observan que los archivos llevan el prefijo "l_" quiere decir "limpio", ya que tuve que hacer unas pequeñas transformaciones mediante el script de Python adjunto para poder insertar la data.
-	• Así mismo se hace un debug para observar cuánto tiempo tardan las operaciones y si hay algún error en la carga.
+	PURPOSE:
+	• This stored procedure loads data into the 'silver' schema from bronze layer. 
+	• It performs the following actions:
+		- Truncates the bronze tables before loading data.
+		- Uses the `BULK INSERT` command to load data from csv Files to bronze tables.
+
+	PARAMETERS:
+	• None. This stored procedure does not accept any parameters or return any values.
+
+	USAGE EXAMPLE:
+    	EXEC bronze.load_bronze;
 */
 
 CREATE OR ALTER PROCEDURE silver.load_silver AS
@@ -20,7 +27,7 @@ BEGIN
 		PRINT '===============================';
 		PRINT '';
 
-		------------------------------------------------ TABLA 1 ------------------------------------------------
+		------------------------------------------------ Table 1 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.actor';
@@ -35,8 +42,8 @@ BEGIN
 		)
 		SELECT
 			actor_id,
-			first_name,
-			last_name,
+			CONCAT(UPPER(LEFT(first_name,1)), LOWER(RIGHT(first_name, LEN(first_name)-1))) AS first_name,
+			CONCAT(UPPER(LEFT(last_name,1)), LOWER(RIGHT(last_name, LEN(last_name)-1))) AS last_name,
 			last_update
 		FROM bronze.actor;
 
@@ -44,7 +51,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 2 ------------------------------------------------
+		------------------------------------------------ Table 2 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.address';
@@ -62,10 +69,10 @@ BEGIN
 		SELECT
 			address_id,
 			address,
-			district,
+			COALESCE(district, 'n/a'),
 			city_id,
-			REPLACE(postal_code,'.0','') AS postal_code,
-			REPLACE(phone,'.0','') AS phone,
+			COALESCE(REPLACE(postal_code,'.0',''), 'n/a') AS postal_code,
+			COALESCE(REPLACE(phone,'.0',''), 'n/a') AS phone,
 			last_update
 		FROM bronze.address;
 
@@ -73,7 +80,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 3 ------------------------------------------------
+		------------------------------------------------ Table 3 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.category';
@@ -94,7 +101,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 4 ------------------------------------------------
+		------------------------------------------------ Table 4 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.city';
@@ -117,7 +124,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 5 ------------------------------------------------
+		------------------------------------------------ Table 5 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.country';
@@ -138,7 +145,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 6 ------------------------------------------------
+		------------------------------------------------ Table 6 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.customer';
@@ -177,7 +184,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 7 ------------------------------------------------
+		------------------------------------------------ Table 7 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.film';
@@ -200,7 +207,7 @@ BEGIN
 		)
 		SELECT
 			film_id,
-			title,
+			CONCAT(UPPER(LEFT(title,1)), LOWER(RIGHT(title, LEN(title)-1))),
 			description,
 			release_year,
 			language_id,
@@ -218,7 +225,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 8 ------------------------------------------------
+		------------------------------------------------ Table 8 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.film_actor';
@@ -239,7 +246,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 9 ------------------------------------------------
+		------------------------------------------------ Table 9 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.film_category';
@@ -260,7 +267,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 10 ------------------------------------------------
+		------------------------------------------------ Table 10 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.inventory';
@@ -283,7 +290,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 11 ------------------------------------------------
+		------------------------------------------------ Table 11 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.language';
@@ -304,7 +311,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 12 ------------------------------------------------
+		------------------------------------------------ Table 12 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.payment';
@@ -334,7 +341,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 13 ------------------------------------------------
+		------------------------------------------------ Table 13 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.rental';
@@ -363,7 +370,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 14 ------------------------------------------------
+		------------------------------------------------ Table 14 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.staff';
@@ -393,14 +400,14 @@ BEGIN
 			username,
 			password,
 			last_update,
-			picture
+			COALESCE(picture, 'n/a')
 		FROM bronze.staff;
 
 		SET @end_time = GETDATE();
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		------------------------------------------------ TABLA 15 ------------------------------------------------
+		------------------------------------------------ Table 15 ------------------------------------------------
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: silver.store';
