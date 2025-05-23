@@ -1,11 +1,21 @@
 /*
 	=======================================
-	  CARGA DE DATOS EN LA CAPA DE BRONCE
+	  LOAD DATA IN BRONZE LAYER
 	=======================================
-	PROPÓSITO
-	• Este script sirve para crear el StoredProcedure para cargar todos los datos a partir de una carpeta local.
-	• Si observan que los archivos llevan el prefijo "l_" quiere decir "limpio", ya que tuve que hacer unas pequeñas transformaciones mediante el script de Python adjunto para poder insertar la data.
-	• Así mismo se hace un debug para observar cuánto tiempo tardan las operaciones y si hay algún error en la carga.
+	PURPOSE:
+	• This stored procedure loads data into the 'bronze' schema from external CSV files. 
+	• It performs the following actions:
+		- Truncates the bronze tables before loading data.
+		- Uses the `BULK INSERT` command to load data from csv Files to bronze tables.
+
+	PARAMETERS:
+	• None. This stored procedure does not accept any parameters or return any values.
+
+	USAGE EXAMPLE:
+    	EXEC bronze.load_bronze;
+	
+	IMPORTANT
+	• The files have the "l_" prefix wich means they were cleaned with the "handling_data_format.ipynb" script.
 */
 
 CREATE OR ALTER PROCEDURE bronze.load_bronze AS
@@ -20,7 +30,7 @@ BEGIN
 		PRINT '===============================';
 		PRINT '';
 
-		-- TABLA 1
+		-- Table 1
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.actor';
@@ -38,7 +48,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 2
+		-- Table 2
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.address';
@@ -56,7 +66,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 3
+		-- Table 3
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.category';
@@ -74,7 +84,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 4
+		-- Table 4
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.city';
@@ -92,7 +102,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 5
+		-- Table 5
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.country';
@@ -110,7 +120,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 6
+		-- Table 6
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.customer';
@@ -128,7 +138,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 7
+		-- Table 7
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.film';
@@ -146,7 +156,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 8
+		-- Table 8
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.film_actor';
@@ -164,7 +174,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 9
+		-- Table 9
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.film_category';
@@ -182,7 +192,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 10
+		-- Table 10
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.inventory';
@@ -200,7 +210,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 11
+		-- Table 11
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.language';
@@ -218,7 +228,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 12
+		-- Table 12
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.payment';
@@ -236,7 +246,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 13
+		-- Table 13
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.rental';
@@ -254,7 +264,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 14
+		-- Table 14
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.staff';
@@ -272,7 +282,7 @@ BEGIN
 		PRINT '>> Duracion: ' + CAST(DATEDIFF(second, @start_time, @end_time) AS NVARCHAR) + ' segundos';
 		PRINT '-----------------------';
 
-		-- TABLA 15
+		-- Table 15
 		SET @start_time = GETDATE();
 
 		PRINT '>> Truncando tabla: bronze.store';
