@@ -1,17 +1,18 @@
 /*
- * =========================================
- * CREACIÓN DE TABLAS
- * =========================================
- * Este Script sirve para crear las 15 tablas en base a los .csv.
- * 
- * ------------------------------
- * 			PRECAUCIÓN
- * ------------------------------
- * CUIDADO con ELIMINAR las tablas si ya cuentan con registros.
- * */
+ 	=========================================
+ 		CREATE TABLES
+ 	=========================================
+	PURPOSE: 
+	Creates the 15 tables, each one for a file.
+ 
+ 	------------------------------
+ 		  WARNING!
+ 	------------------------------
+	 BE CAREFUL with DROPING the tables if you already have data.
+  */
 
 
--- TABLA 1
+-- Table 1
 IF OBJECT_ID('bronze.actor', 'U') IS NOT NULL
     DROP TABLE bronze.actor;
 GO
@@ -23,7 +24,7 @@ CREATE TABLE bronze.actor(
 );
 GO
 
--- TABLA 2
+-- Table 2
 IF OBJECT_ID('bronze.adress', 'U') IS NOT NULL
     DROP TABLE bronze.adress;
 GO
@@ -39,7 +40,7 @@ CREATE TABLE bronze.adress(
 );
 GO
 
--- TABLA 3
+-- Table 3
 IF OBJECT_ID('bronze.category', 'U') IS NOT NULL
     DROP TABLE bronze.category;
 GO
@@ -50,7 +51,7 @@ CREATE TABLE bronze.category(
 );
 GO
 
--- TABLA 4
+-- Table 4
 IF OBJECT_ID('bronze.city', 'U') IS NOT NULL
     DROP TABLE bronze.city;
 GO
@@ -62,7 +63,7 @@ CREATE TABLE bronze.city(
 );
 GO
 
--- TABLA 5
+-- Table 5
 IF OBJECT_ID('bronze.country', 'U') IS NOT NULL
     DROP TABLE bronze.country;
 GO
@@ -73,7 +74,7 @@ CREATE TABLE bronze.country(
 );
 GO
 
--- TABLA 6
+-- Table 6
 IF OBJECT_ID('bronze.customer', 'U') IS NOT NULL
     DROP TABLE bronze.customer;
 GO
@@ -91,7 +92,7 @@ CREATE TABLE bronze.customer(
 );
 GO
 
--- TABLA 7
+-- Table 7
 IF OBJECT_ID('bronze.film', 'U') IS NOT NULL
     DROP TABLE bronze.film;
 GO
@@ -113,7 +114,7 @@ CREATE TABLE bronze.film(
 );
 GO
 
--- TABLA 8
+-- Table 8
 IF OBJECT_ID('bronze.film_actor', 'U') IS NOT NULL
     DROP TABLE bronze.film_actor;
 GO
@@ -124,7 +125,7 @@ CREATE TABLE bronze.film_actor(
 );
 GO
 
--- TABLA 9
+-- Table 9
 IF OBJECT_ID('bronze.film_category', 'U') IS NOT NULL
     DROP TABLE bronze.film_category;
 GO
@@ -135,7 +136,7 @@ CREATE TABLE bronze.film_category(
 );
 GO
 
--- TABLA 10
+-- Table 10
 IF OBJECT_ID('bronze.inventory', 'U') IS NOT NULL
     DROP TABLE bronze.inventory;
 GO
@@ -147,7 +148,7 @@ CREATE TABLE bronze.inventory(
 );
 GO
 
--- TABLA 11
+-- Table 11
 IF OBJECT_ID('bronze.language', 'U') IS NOT NULL
     DROP TABLE bronze.language;
 GO
@@ -158,7 +159,7 @@ CREATE TABLE bronze.language(
 );
 GO
 
--- TABLA 12
+-- Table 12
 IF OBJECT_ID('bronze.payment', 'U') IS NOT NULL
     DROP TABLE bronze.payment;
 GO
@@ -172,7 +173,7 @@ CREATE TABLE bronze.payment(
 );
 GO
 
--- TABLA 13
+-- Table 13
 IF OBJECT_ID('bronze.rental', 'U') IS NOT NULL
     DROP TABLE bronze.rental;
 GO
@@ -187,7 +188,7 @@ CREATE TABLE bronze.rental(
 );
 GO
 
--- TABLA 14
+-- Table 14
 IF OBJECT_ID('bronze.staff', 'U') IS NOT NULL
     DROP TABLE bronze.staff;
 GO
@@ -206,7 +207,7 @@ CREATE TABLE bronze.staff(
 );
 GO
 
--- TABLA 15
+-- Table 15
 IF OBJECT_ID('bronze.store', 'U') IS NOT NULL
     DROP TABLE bronze.store;
 GO
