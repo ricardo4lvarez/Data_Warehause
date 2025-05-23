@@ -54,15 +54,15 @@ data-warehouse-project/
 │
 ├── tests/                              # Test scripts and quality files
 │
-├── docs/                                                       # Project documentation and architecture details
-│   ├── data_flow.jpg                                           # Draw.io file for the data flow diagram
-│   ├── data_integration.jpg                                    # Draw.io file shows how the silver and bronze layer model relate and integrate in the gold layer
-│   ├── data_layers.jpg                                         # Draw.io file shows, in general terms, the guidelines for the layers
-│   ├── data_model.jpg                                          # Draw.io file for data models (snowflake schema)
-│   ├── entity_relationship_model_bronze&silver_layer.jpg       # Draw.io file for entity relationship model for the bronze and silver layer
-│   ├── high_level_architecture.jpg                             # Draw.io file shows the project's architecture
-│   ├── data_catalog.md                                         # Catalog of datasets, including field descriptions and metadata
-│   ├── naming-conventions.md                                   # Consistent naming guidelines for tables, columns, and files
+├── docs/                                   # Project documentation and architecture details
+│   ├── bronze&silver_layer_model.jpg       # Draw.io file for entity relationship model for the bronze and silver layer
+│   ├── data_flow.jpg                       # Draw.io file for the data flow diagram
+│   ├── data_integration.jpg                # Draw.io file shows how the silver and bronze layer model relate and integrate in the gold layer
+│   ├── data_layers.jpg                     # Draw.io file shows, in general terms, the guidelines for the layers
+│   ├── data_model.jpg                      # Draw.io file for data models (snowflake schema)
+│   ├── high_level_architecture.jpg         # Draw.io file shows the project's architecture
+│   ├── data_catalog.md                     # Catalog of datasets, including field descriptions and metadata
+│   ├── naming-conventions.md               # Consistent naming guidelines for tables, columns, and files
 │
 │
 ├── README.md                           # Project overview and instructions
