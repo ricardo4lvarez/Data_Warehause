@@ -1,17 +1,18 @@
 /*
- * =========================================
- * CREACIÓN DE TABLAS
- * =========================================
- * Este Script sirve para crear las 15 tablas en base a los .csv.
- * 
- * ------------------------------
- * 			PRECAUCIÓN
- * ------------------------------
- * CUIDADO con ELIMINAR las tablas si ya cuentan con registros.
- * */
+ 	=========================================
+ 		CREATE TABLES
+ 	=========================================
+	PURPOSE: 
+	Creates the tables for the silver layer.
+ 
+ 	------------------------------
+ 		  WARNING!
+ 	------------------------------
+	 BE CAREFUL with DROPING the tables if you already have data.
+  */
 
  USE datawarehouse;
--- TABLA 1
+-- Table 1
 IF OBJECT_ID('silver.actor', 'U') IS NOT NULL
     DROP TABLE silver.actor;
 GO
@@ -24,7 +25,7 @@ CREATE TABLE silver.actor(
 );
 GO
 
--- TABLA 2
+-- Table 2
 IF OBJECT_ID('silver.address', 'U') IS NOT NULL
     DROP TABLE silver.address;
 GO
@@ -40,7 +41,7 @@ CREATE TABLE silver.address(
 );
 GO
 
--- TABLA 3
+-- Table 3
 IF OBJECT_ID('silver.category', 'U') IS NOT NULL
     DROP TABLE silver.category;
 GO
@@ -52,7 +53,7 @@ CREATE TABLE silver.category(
 );
 GO
 
--- TABLA 4
+-- Table 4
 IF OBJECT_ID('silver.city', 'U') IS NOT NULL
     DROP TABLE silver.city;
 GO
@@ -65,7 +66,7 @@ CREATE TABLE silver.city(
 );
 GO
 
--- TABLA 5
+-- Table 5
 IF OBJECT_ID('silver.country', 'U') IS NOT NULL
     DROP TABLE silver.country;
 GO
@@ -77,7 +78,7 @@ CREATE TABLE silver.country(
 );
 GO
 
--- TABLA 6
+-- Table 6
 IF OBJECT_ID('silver.customer', 'U') IS NOT NULL
     DROP TABLE silver.customer;
 GO
@@ -96,7 +97,7 @@ CREATE TABLE silver.customer(
 );
 GO
 
--- TABLA 7
+-- Table 7
 IF OBJECT_ID('silver.film', 'U') IS NOT NULL
     DROP TABLE silver.film;
 GO
@@ -118,7 +119,7 @@ CREATE TABLE silver.film(
 );
 GO
 
--- TABLA 8
+-- Table 8
 IF OBJECT_ID('silver.film_actor', 'U') IS NOT NULL
     DROP TABLE silver.film_actor;
 GO
@@ -130,7 +131,7 @@ CREATE TABLE silver.film_actor(
 );
 GO
 
--- TABLA 9
+-- Table 9
 IF OBJECT_ID('silver.film_category', 'U') IS NOT NULL
     DROP TABLE silver.film_category;
 GO
@@ -142,7 +143,7 @@ CREATE TABLE silver.film_category(
 );
 GO
 
--- TABLA 10
+-- Table 10
 IF OBJECT_ID('silver.inventory', 'U') IS NOT NULL
     DROP TABLE silver.inventory;
 GO
@@ -155,7 +156,7 @@ CREATE TABLE silver.inventory(
 );
 GO
 
--- TABLA 11
+-- Table 11
 IF OBJECT_ID('silver.language', 'U') IS NOT NULL
     DROP TABLE silver.language;
 GO
@@ -167,7 +168,7 @@ CREATE TABLE silver.language(
 );
 GO
 
--- TABLA 12
+-- Table 12
 IF OBJECT_ID('silver.payment', 'U') IS NOT NULL
     DROP TABLE silver.payment;
 GO
@@ -182,7 +183,7 @@ CREATE TABLE silver.payment(
 );
 GO
 
--- TABLA 13
+-- Table 13
 IF OBJECT_ID('silver.rental', 'U') IS NOT NULL
     DROP TABLE silver.rental;
 GO
@@ -198,7 +199,7 @@ CREATE TABLE silver.rental(
 );
 GO
 
--- TABLA 14
+-- Table 14
 IF OBJECT_ID('silver.staff', 'U') IS NOT NULL
     DROP TABLE silver.staff;
 GO
@@ -218,7 +219,7 @@ CREATE TABLE silver.staff(
 );
 GO
 
--- TABLA 15
+-- Table 15
 IF OBJECT_ID('silver.store', 'U') IS NOT NULL
     DROP TABLE silver.store;
 GO
