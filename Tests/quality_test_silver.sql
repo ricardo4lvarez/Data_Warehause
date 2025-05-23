@@ -1,12 +1,19 @@
 /*
-	=======================================
-	  REVISIÓN DE CALIDAD DE DATOS
-	=======================================
-	PROPÓSITO
-	• Este script fue utilizado para realizar las transformaciones pertinentes de los datos para encargarse de los NULL, espacios en blanco en nombres, y revisar que los datos hayan sido transferidos correctamente entre capas.
+===============================================================================
+Quality Checks
+===============================================================================
+Script Purpose:
+    This script performs various quality checks for data consistency, accuracy, 
+    and standardization across the 'silver' layer. It includes checks for:
+    - Null or duplicate primary keys.
+    - Unwanted spaces in string fields.
+    - Data standardization and consistency.
+    - Invalid date ranges and orders.
+    - Data consistency between related fields.
 */
------------------------------------------------- TABLA 1 ------------------------------------------------
--- Determina si hay datos nulos y/o repetidos en la llave primaria
+
+------------------------------------------------ Table 1 ------------------------------------------------
+-- Check for duplicates and/or null values in primary key
 SELECT
 	actor_id,
 	COUNT(actor_id)
@@ -14,13 +21,13 @@ FROM bronze.actor
 	GROUP BY actor_id
 	HAVING COUNT(actor_id) > 1;
 
--- Asegurarse que no haya nombres con espacios en blanco
+-- Making sure there are no blank spaces in the names
 SELECT
 	first_name
 FROM bronze.actor
 	WHERE first_name != TRIM(first_name);
 
--- Verificar y manejar los valores nulos
+-- Verify and handle missing values
 SELECT
 	*
 FROM bronze.actor
@@ -28,10 +35,16 @@ FROM bronze.actor
 		OR first_name IS NULL
 		OR last_name IS NULL
 		OR last_update IS NULL;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
 
------------------------------------------------- TABLA 2 ------------------------------------------------
--- Determina si hay datos nulos y/o repetidos en la llave primaria
+SELECT
+	actor_id,
+	CONCAT(UPPER(LEFT(first_name,1)), LOWER(RIGHT(first_name, LEN(first_name)-1))) AS first_name,
+	CONCAT(UPPER(LEFT(last_name,1)), LOWER(RIGHT(last_name, LEN(last_name)-1))) AS last_name,
+	last_update
+FROM bronze.actor;
+
+------------------------------------------------ Table 2 ------------------------------------------------
+-- Check for duplicates and/or null values in primary key
 SELECT
 	address_id,
 	COUNT(address_id)
@@ -39,64 +52,64 @@ FROM bronze.address
 	GROUP BY address_id
 	HAVING COUNT(address_id) > 1;
 
--- Tratar los espacios antes y después en la dirección
+-- Check for blanck spaces
 SELECT address FROM bronze.address
 	WHERE address != TRIM(address);
 
--- Eliminar address2 y quitar los puntos decimales de postal_code y phone
+-- Drop adress2 and get rid of decimal points in postal_code and phone
 SELECT
 	address_id,
 	address,
-	district,
+	COALESCE(district, 'n/a'),
 	city_id,
-	REPLACE(postal_code,'.0','') AS postal_code,
-	REPLACE(phone,'.0','') AS phone,
+	COALESCE(REPLACE(postal_code,'.0',''), 'n/a') AS postal_code,
+	COALESCE(REPLACE(phone,'.0',''), 'n/a') AS phone,
 	last_update
 FROM bronze.address;
-/* CONCLUSIÓN:Se ocupan transformaciones*/
------------------------------------------------- TABLA 3 ------------------------------------------------
--- Revisar que no haya espacios en blanco en los nombres
+
+------------------------------------------------ Table 3 ------------------------------------------------
+-- Making sure there are no blank spaces in the names
 SELECT name FROM bronze.category
 	WHERE name != TRIM(name);
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 4 ------------------------------------------------
--- Revisar que no haya PK_id repetidos
+------------------------------------------------ Table 4 ------------------------------------------------
+-- Check for duplicates and/or null values in primary key
 SELECT city_id, COUNT(city_id) FROM bronze.city
 	GROUP BY city_id
 	HAVING COUNT(city_id) > 1;
 
--- Comprobar por espacios en blanco
+-- Check for blanck spaces
 SELECT city FROM bronze.city
 	WHERE city != TRIM(city);
 
--- Comprobar existencia de valores nulos
+-- Check for null values
 SELECT * FROM bronze.city
 	WHERE city_id IS NULL
 		OR city IS NULL
 		OR country_id IS NULL
 		OR last_update IS NULL;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 5 ------------------------------------------------
--- Revisar que no haya espacios en blanco
+------------------------------------------------ Table 5 ------------------------------------------------
+-- Check for missing values
 SELECT country FROM bronze.country
 	WHERE country != TRIM(country);
 
--- Revisar por valores nulos
+-- Check for null values
 SELECT * FROM bronze.country
 	WHERE country_id IS NULL
 		OR country IS NULL
 		OR last_update IS NULL;
 
--- Revisar si hay duplicados
+-- Checking for duplicates
 SELECT country_id, COUNT(country_id) FROM bronze.country
 	GROUP BY country_id
 	HAVING COUNT(country_id) > 1;
-/* CONCLUSIÓN: No se ocupan transformaciones*/
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 6 ------------------------------------------------
--- Revisar que no haya PK repetidas
+------------------------------------------------ Table 6 ------------------------------------------------
+-- Check for duplicates and/or null values in primary key
 SELECT 
 	customer_id, 
 	COUNT(customer_id) 
@@ -104,7 +117,7 @@ FROM bronze.customer
 	GROUP BY customer_id
 	HAVING COUNT(customer_id) > 1;
 
--- Revisar por espacios vacíos dentro de los nombres
+-- Making sure there are no blank spaces in the names
 SELECT
 	first_name,
 	last_name,
@@ -113,7 +126,7 @@ FROM bronze.customer
 	WHERE first_name != TRIM(first_name)
 		OR last_name != TRIM(last_name)
 		OR email != TRIM(email);
--- Dar formato a los nombes y al email, así como 
+-- Format first and last name, and email; also changing bool format.
 SELECT
 	customer_id,
 	store_id,
@@ -131,8 +144,9 @@ SELECT
 FROM bronze.customer;
 
 SELECT * FROM silver.customer;
------------------------------------------------- TABLA 7 ------------------------------------------------
+------------------------------------------------ Table 7 ------------------------------------------------
 
+-- Replace and get rid of some characters for better understanding.
 SELECT
 	film_id,
 	title,
@@ -149,22 +163,24 @@ SELECT
 	last_update
 FROM bronze.film;
 
------------------------------------------------- TABLA 8 ------------------------------------------------
+------------------------------------------------ Table 8 ------------------------------------------------
 SELECT
 	actor_id,
 	film_id,
 	last_update
 FROM bronze.film_actor;
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 9 ------------------------------------------------
+------------------------------------------------ Table 9 ------------------------------------------------
 
 SELECT
 	film_id,
 	category_id,
 	last_update
 FROM bronze.film_category;
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 10 ------------------------------------------------
+------------------------------------------------ Table 10 ------------------------------------------------
 
 SELECT
 	inventory_id,
@@ -172,16 +188,18 @@ SELECT
 	store_id,
 	last_update
 FROM bronze.inventory;
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 11 ------------------------------------------------
+------------------------------------------------ Table 11 ------------------------------------------------
 SELECT
 	language_id,
 	name,
 	last_update
 FROM bronze.language;
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 12 ------------------------------------------------
--- Okay, en este caso si hay repeticiones en el rental_id siendo que debería ser único; analizando la estructura de las tablas he podido observar que los "customer_id" coinciden en todos los casos (ya que debe ser el mismo cliente en ambos casos), por ello aquellos que no coincidan en ese campo serán desechados
+------------------------------------------------ Table 12 ------------------------------------------------
+-- Okay, rental_id is getting duplicates; while analizing the structure I noticed both rental and payment "customer_id" must be the same, otherwise they will be removed.
 SELECT 
 	bp.payment_id,
 	bp.customer_id,
@@ -194,7 +212,7 @@ LEFT JOIN bronze.rental br
 ON bp.rental_id = br.rental_id
 	WHERE bp.customer_id = br.customer_id;
 
------------------------------------------------- TABLA 13 ------------------------------------------------
+------------------------------------------------ Table 13 ------------------------------------------------
 
 SELECT
 	rental_id,
@@ -205,9 +223,11 @@ SELECT
 	staff_id,
 	last_update
 FROM bronze.rental;
+/* CONCLUSION: No transformations required*/
 
------------------------------------------------- TABLA 14 ------------------------------------------------
+------------------------------------------------ Table 14 ------------------------------------------------
 
+-- Treat null values
 SELECT
 	staff_id,
 	first_name,
@@ -219,10 +239,10 @@ SELECT
 	username,
 	password,
 	last_update,
-	picture
+	COALESCE(picture, 'n/a')
 FROM bronze.staff;
 
------------------------------------------------- TABLA 14 ------------------------------------------------
+------------------------------------------------ Table 15 ------------------------------------------------
 
 SELECT
 	store_id,
@@ -230,3 +250,4 @@ SELECT
 	address_id,
 	last_update
 FROM bronze.store;
+/* CONCLUSION: No transformations required*/
